@@ -1,0 +1,10 @@
+import { Router } from "express";
+import gameSchema from "../schemas/games.schema.js";
+import validateSchema from "../middlewares/validateSchema.middleware.js";
+import { postGames } from "../controllers/games.controller.js";
+
+const gamesRouter = Router();
+
+gamesRouter.post("/games", validateSchema(gameSchema), postGames);
+
+export default gamesRouter;

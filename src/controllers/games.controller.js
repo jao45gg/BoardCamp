@@ -6,8 +6,8 @@ export async function postGames(req, res) {
 
         const { name, image, stockTotal, pricePerDay } = req.body;
 
-        const games = await db.query(`SELECT * FROM games WHERE name=$1`, [name]);
-        if (!games) return res.sendStatus(409);
+        const games = await db.query(`SELECT * FROM games WHERE name=$1;`, [name]);
+        if (games) return res.sendStatus(409);
 
         await db.query(`INSERT INTO games ("name", "image", "stockTotal", "pricePerDay") VALUES 
         ($1, $2, $3, $4);`, [name, image, stockTotal, pricePerDay]);
@@ -18,5 +18,17 @@ export async function postGames(req, res) {
         res.status(500).send(err.message);
     }
 
+}
+
+export async function getGames(req, res) {
+
+    try {
+
+        const games = await db.query(`SELECT * FROM games;`);
+        res.send(games.rows);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 
 }

@@ -19,3 +19,16 @@ export async function postCostumer(req, res) {
     }
 
 }
+
+export async function getCustomers(req, res) {
+
+    try {
+
+        const games = await db.query(`SELECT * FROM customers;`);
+        res.send(games.rows);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+
+}

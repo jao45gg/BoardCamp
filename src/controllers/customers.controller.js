@@ -32,3 +32,19 @@ export async function getCustomers(req, res) {
     }
 
 }
+
+export async function getCustomersById(req, res) {
+
+    const { id } = req.params;
+
+    try {
+
+        const games = await db.query(`SELECT * FROM customers WHERE id=$1;`, [id]);
+        if(games.rows.length <= 0) return res.sendStatus(404);
+        res.send(games.rows);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+
+}

@@ -84,7 +84,7 @@ export async function endRental(req, res) {
 
         let delayFee = 0;
         if (returnDateMs > rentDateMS + daysRentedMS) {
-            delayFee = ((returnDateMs - rentDateMS) * 1.1574074074074074e-8)
+            delayFee = ((returnDateMs - rentDateMS - daysRentedMS) * 1.1574074074074074e-8)
                 * (rental.rows[0].originalPrice / rental.rows[0].daysRented);
         }
 

@@ -75,7 +75,7 @@ export async function endRental(req, res) {
 
         const rental = await db.query(`SELECT * FROM rentals WHERE id=$1`, [id]);
         if (rental.rows.length <= 0) return res.sendStatus(404);
-        if (rental.rows[0].returnDate !== null) return res.sendStatus(404);
+        if (rental.rows[0].returnDate !== null) return res.sendStatus(400);
 
         const returnDate = dayjs().format("YYYY-MM-DD");
         const delayFee = ((dayjs(returnDate).valueOf() - dayjs(rental.rows[0].rentDate).valueOf()) * 1.1574074074074074e-8)

@@ -1,4 +1,5 @@
 import db from "../database/database.connection.js";
+import dayjs from "dayjs";
 
 export async function postCostumer(req, res) {
 
@@ -24,8 +25,14 @@ export async function getCustomers(req, res) {
 
     try {
 
-        const games = await db.query(`SELECT * FROM customers;`);
-        res.send(games.rows);
+        const customers = await db.query(`SELECT * FROM customers;`);
+        const customersFormated = customers.rows.map(c => (
+            {
+                ...c,
+                birthday: dayjs(c.birthday).format("YYYY-MM-DD")
+            }
+        ))
+        res.send(customersFormated);
 
     } catch (err) {
         res.status(500).send(err.message);
@@ -41,7 +48,12 @@ export async function getCustomersById(req, res) {
 
         const customer = await db.query(`SELECT * FROM customers WHERE id=$1;`, [id]);
         if (customer.rows.length <= 0) return res.sendStatus(404);
-        res.send(customer.rows[0]);
+
+        const customersFormated = {
+            ...customer.rows[0],
+            birthday: dayjs(customer.rows[0].birthday).format("YYYY-MM-DD")
+        }
+        res.send(customersFormated);
 
     } catch (err) {
         res.status(500).send(err.message);
